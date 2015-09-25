@@ -5,40 +5,40 @@ requirejs.config({
     paths: {jquery: 'vendor/jquery-1.10.2.min'}
 });
 
-requirejs(["pvector", "mover"], function(PVector, Mover) {
+requirejs(["pvector", "mover", "processing"], function(PVector, Mover, Processing) {
 
     var movers = [];
     var numMovers = 20;
-    var p;
-    p.height = 600;
-    p.width = 600;
+    var p = new Processing(document.getElementById('drawing'));
 
-    setup = function() {
-        //p.size(600,500);
-        //p.background("white");
+    function setup() {
+
+        p.size(600,600);
+        p.background("white");
 
         for(var i = 0; i < numMovers; i++) {
-            var m = new Mover(new PVector(Math.random()* p.width, Math.random()* p.height),
+            var m = new Mover(p, new PVector(Math.random()* p.width, Math.random()* p.height),
                 new PVector(0,0),
                 new PVector(0,0),
                 4,
                 function(m){update(m)});
             movers.push(m);
         }
-    };
+    }
 
-    draw = function() {
-        //p.background("white");
+    function draw() {
+        p.background("white");
 
         for(var i = 0; i < numMovers; i++) {
-            movers[i].update(movers[i]);
+            update(movers[i]);
+            movers[i].update();
             movers[i].checkEdges();
             movers[i].display();
         }
-    };
+    }
 
     function update(mover) {
-        //var mouse = new PVector(p.mouseX, p.mouseY);
+        var mousePos = new PVector(p.mouseX, p.mouseY);
         var dir = PVector.sub(mousePos, mover.location);
         dir.normalize();
         dir.mult(0.5);
@@ -56,16 +56,16 @@ requirejs(["pvector", "mover"], function(PVector, Mover) {
             y: evt.clientY - rect.top
         };
     }
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
+    //var canvas = document.getElementById('drawing');
+    //var context = canvas.getContext('2d');
 
-    canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
-        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
-        writeMessage(canvas, message);
-    }, false);
+    //p.canvas.addEventListener('mousemove', function(evt) {
+    //    var mousePos = getMousePos(p.canvas, evt);
+    //    var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+    //    writeMessage(canvas, message);
+    //}, false);
 
     setup();
-    setInterval(draw(), 15);
+    setInterval(function(){draw()}, 15);
 
 });

@@ -1,8 +1,6 @@
-/**
- * Created by richardburkhardt on 11/13/14.
- */
 
-(function() {
+
+define(function() {
     var PVector = function(x, y) {
         this.x = x;
         this.y = y;

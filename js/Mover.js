@@ -1,11 +1,13 @@
 
-(function (p) {
-    p.Mover = function(location, velocity, acceleration, topspeed, update) {
+define(function () {
+    return function(p, location, velocity, acceleration, topspeed, update) {
+        //this.p = processing;
         this.location = location;
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.topspeed = topspeed;
         this.update = update;
+
 
         this.display = function () {
             p.ctx.beginPath();
@@ -29,7 +31,13 @@
             } else if (this.location.y < 0) {
                 this.location.y = p.height;
             }
-        }
+        };
+
+        this.update = function () {
+            this.velocity.add(this.acceleration);
+            this.velocity.limit(this.topspeed);
+            this.location.add(this.velocity);  //The Mover moves.
+        };
     };
 
 //    var mover;
@@ -63,4 +71,4 @@
 //        mover.display();
 //    };
 
-})(Window.processing = Window.processing || {});
+});

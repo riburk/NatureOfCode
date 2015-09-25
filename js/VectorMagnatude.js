@@ -1,6 +1,6 @@
 
 
-(function (processing){
+define(function (processing){
     var ctx, p;
 
     function setup() {

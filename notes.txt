@@ -1,0 +1,5 @@
+1. Make this into a node app
+2. set up routes to different pages
+3. Make each of the samples into a component
+4. Allow navigation between the samples
+5. add controls to allow tweaking the parameters
