@@ -1,6 +1,6 @@
 
 
-define(['pvector'], function(PVector){
+define(['pvector', 'classicalinheritance'], function(PVector){
     return function($container, location, r, index){
         this.location = location;
         this.index = index;

@@ -1,4 +1,3 @@
-
 /*****************************
  * Project ideas
  *
@@ -12,88 +11,85 @@
  *
  */
 
-requirejs.config({
-    baseUrl: 'js',
-    paths: {jquery: 'vendor/jquery-1.10.2.min'}
-});
 
 
-requirejs(["jquery", "circle", "pvector"], function($, Circle, PVector) {
+require(["js/config"], function () {
+    require(["jquery", "circle", "pvector"], function ($, Circle, PVector) {
 
-    var canvas, ctx, circles = [];
-    var $acceleration, $force;
-    var $container = $("#drawing");
+        var canvas, ctx, circles = [];
+        var $acceleration, $force;
+        var $container = $("#canvas");
 
-    window.requestAnimFrame = (function () {
-        return window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            function (callback) {
-                window.setTimeout(callback, 1000 / 60);
-            };
-    })();
+        window.requestAnimFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+        })();
 
-    function init() {
-        canvas = $container.get(0);
-        ctx = canvas.getContext("2d");
-        $acceleration = $('#accel');
-        $force = $('#force');
+        function init() {
+            canvas = $container.get(0);
+            ctx = canvas.getContext("2d");
+            $acceleration = $('#accel');
+            $force = $('#force');
 
-        for (var i = 0; i < 20; i++) {
-            circles.push(new Circle($container, new PVector(Math.random() * canvas.width, Math.random() * canvas.height), Math.random() * 80 + 10, i));
+            for (var i = 0; i < 20; i++) {
+                circles.push(new Circle($container, new PVector(Math.random() * canvas.width, Math.random() * canvas.height), Math.random() * 80 + 10, i));
+            }
+            animate();
         }
-        animate();
-    }
 
-    function animate() {
-        requestAnimFrame(animate);
-        step();
-    }
+        function animate() {
+            requestAnimFrame(animate);
+            step();
+        }
 
-    function step() {
-        draw();
-    }
+        function step() {
+            draw();
+        }
 
-    function draw() {
-        ctx.fillStyle = 'LavenderBlush';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        function draw() {
+            ctx.fillStyle = 'LavenderBlush';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        for (var i = 0; i < circles.length; i++) {
+            for (var i = 0; i < circles.length; i++) {
 
-            for (var j = 0; j < circles.length; j++) {
-                if (i != j) {
-                    var force = circles[j].attract(circles[i]);
-                    circles[i].applyForce(force);
-                    if (i == 0) {
-                        $force.text(force.mag());
-                        $acceleration.text(circles[0].acceleration.mag());
+                for (var j = 0; j < circles.length; j++) {
+                    if (i != j) {
+                        var force = circles[j].attract(circles[i]);
+                        circles[i].applyForce(force);
+                        if (i == 0) {
+                            $force.text(force.mag());
+                            $acceleration.text(circles[0].acceleration.mag());
+                        }
                     }
                 }
+                circles[i].update();
+                circles[i].display();
             }
-            circles[i].update();
-            circles[i].display();
+
         }
 
-    }
+
+        init();
+
+        $('#canvas').mousemove(function (event) {
+            currentMousePos.x = event.pageX - event.currentTarget.offsetLeft;
+            currentMousePos.y = event.pageY - event.currentTarget.offsetTop;
+
+            for (var i = 0; i < circles.length; i++) {
+                circles[i].grow = circles[i].hitTest(currentMousePos);
+            }
+        });
 
 
-    init();
-
-    $('#drawing').mousemove(function (event) {
-        currentMousePos.x = event.pageX - event.currentTarget.offsetLeft;
-        currentMousePos.y = event.pageY - event.currentTarget.offsetTop;
-
-        for (var i = 0; i < circles.length; i++) {
-            circles[i].grow = circles[i].hitTest(currentMousePos);
-        }
+        var currentMousePos = new PVector(0, 0);
     });
-
-
-
-    var currentMousePos = new PVector(0, 0);
-})();
+});
 
 
 

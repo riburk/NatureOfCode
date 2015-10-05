@@ -43,23 +43,23 @@ define(['jquery', 'pvector'], function ($, PVector) {
         //    this.ctx = this.canvas.getContext("2d");
         //};
 
-        this.animate = function () {
+        this.animate = function (drawFunc) {
             //if ( run )
             requestAnimFrame(animate);
-            step();
+            step(drawFunc);
         };
 
-        this.step = function () {
+        this.step = function (draw) {
             this.world.Step(1 / 60, 3, 2);
-            this.draw();
+            draw();
         };
 
-        document.addEventListener("DOMContentLoaded", function () {
-            init();
-            this.setup();
-            //setInterval(this.draw, 15);
-            animate();
-        });
+        //document.addEventListener("DOMContentLoaded", function () {
+        //    init();
+        //    this.setup();
+        //    //setInterval(this.draw, 15);
+        //    animate();
+        //});
 
     }
 });
