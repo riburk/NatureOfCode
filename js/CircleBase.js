@@ -1,47 +1,40 @@
+/**
+ * Created by richardburkhardt on 3/11/15.
+ */
 
+define(['pvector', 'classicalInheritance'], function(PVector){
+    var Circle = function($container, settings){
+        //var self = this;
 
-define(['jquery', 'pvector', 'classicalinheritance'], function($, PVector){
-    return function($container, location, r, index){
-        this.location = location;
-        this.index = index;
-        this.r = r;
-        this.color = 'HoneyDew';
-        var max_r = r * 2;
-        var min_r = r;
-        this.grow = false;
-        var grow_rate = 1.2;
-        var direction = new PVector(Math.random() * 2 - 1, Math.random() * 2 - 1);
-        var rate = .05;
-        this.velocity = PVector.mult(direction, rate);
-        this.acceleration = new PVector(0,0);
-        this.getMass = function(){return Math.PI * this.r * this.r};
+        this.init = function(self, $container, settings) {
+            self.location = settings.location ? settings.location : new PVector(100, 100);
+            self.r = settings.radius ? settings.radius : 50;
+            self.grow = false;
+            self.color = settings.color ? settings.color : 'HoneyDew';
+            self.acceleration = new PVector(0, 0);
+            self.velocity = settings.initialVelocity ? settings.initialVelocity : new PVector(0, 0);
+            self.getMass = function () {
+                return Math.PI * this.r * this.r
+            };
+            self.canvas = $container.get(0);
+            self.ctx = this.canvas.getContext("2d");
 
-        this.canvas = $container.get(0);
-        this.ctx = this.canvas.getContext("2d");
+        };
+
+        if($container && settings) {
+            this.init(this, $container, settings);
+        }
+
         var G = .1;
         var topSpeed = 1;
-
         var dragCoefficient = 1000;
         var minDistance = 5;
         var maxDistance = 500;
+        var grow_rate = 1.2;
+        var max_r = this.r * 2;
+        var min_r = this.r;
 
-        this.display = function(){
-            this.ctx.beginPath();
-            this.ctx.arc(this.location.x, this.location.y, this.r, 0, Math.PI * 2, true);
-            this.ctx.fillStyle = this.color;
-            this.ctx.fill();
-            this.ctx.strokeStyle = "DimGray";
-            this.ctx.lineWidth = 3;
-            this.ctx.stroke();
-            this.ctx.font = "16px Georgia";
-            this.ctx.strokeStyle = "Black";
-            this.ctx.lineWidth = 2;
-            this.ctx.fillStyle = "Black";
-            var text = Math.round(this.r);
-            var textSize = this.ctx.measureText(text);
-            this.ctx.fillText(text, this.location.x - 0.5 * textSize.width, this.location.y +4, 2*this.r);
 
-        };
 
         this.update = function(){
             var drag = this.getDrag(dragCoefficient);
@@ -146,5 +139,24 @@ define(['jquery', 'pvector', 'classicalinheritance'], function($, PVector){
             drag.mult(dragMagnitude);
             return drag;
         };
-    }
+    };
+
+    Circle.method('display', function(){
+        this.ctx.beginPath();
+        this.ctx.arc(this.location.x, this.location.y, this.r, 0, Math.PI * 2, true);
+        this.ctx.fillStyle = this.color;
+        this.ctx.fill();
+        this.ctx.strokeStyle = "DimGray";
+        this.ctx.lineWidth = 3;
+        this.ctx.stroke();
+        this.ctx.font = "16px Georgia";
+        this.ctx.strokeStyle = "Black";
+        this.ctx.lineWidth = 2;
+        this.ctx.fillStyle = "Black";
+        var text = Math.round(this.r);
+        var textSize = this.ctx.measureText(text);
+        this.ctx.fillText(text, this.location.x - 0.5 * textSize.width, this.location.y +4, 2*this.r);
+    });
+
+    return Circle;
 });

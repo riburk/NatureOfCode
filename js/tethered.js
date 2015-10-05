@@ -16,7 +16,7 @@
 // 6. Moons repel each other
 // 7. Draw a line for the tether (or not)
 
-define(['jquery', 'circle', 'pvector', 'tetheredCircle'], function($, Circle, PVector, TetheredCircle){
+define(['jquery', 'CircleBase', 'pvector', 'tetheredCircle'], function($, Circle, PVector, TetheredCircle){
     return function() {
         var canvas, ctx, planet, moon, satellite, sat2, sat3, sat4;
         var $container = $("#canvas");

@@ -22,13 +22,8 @@
 
 var currentMousePos;
 
-//requirejs.config({
-//    baseUrl: 'js',
-//    paths: {jquery: 'vendor/jquery-1.10.2.min'}
-//});
-
 require(["js/config"], function () {
-    require(["jquery", "circles", "pvector", "tethered"], function ($, Circles, PVector, Tethered) {
+    require(["jquery", "pvector", "tethered"], function ($, PVector, Tethered) {
 
         var currentTest;
         var currentMousePos;
@@ -57,7 +52,7 @@ require(["js/config"], function () {
         function init() {
             currentTest = new Tethered();
             currentTest.init();
-            var canvas = document.getElementById("drawing");
+            var canvas = document.getElementById("canvas");
 
             canvas.addEventListener('mousemove', function (evt) {
                 onMouseMove(canvas, evt);

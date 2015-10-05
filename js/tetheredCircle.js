@@ -2,7 +2,7 @@
  * Created by richardburkhardt on 3/30/15.
  */
 
-define(['pvector', 'circle', 'classicalInheritance'], function(PVector, Circle) {
+define(['pvector', 'CircleBase', 'classicalInheritance'], function(PVector, Circle) {
     function TetheredCircle($container, settings, parent) {
         this.parent = parent;
         this.init(this, $container, settings);
